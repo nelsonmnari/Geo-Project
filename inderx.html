@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    />
+    <title>Leaflet Geoporoject</title>
+
+    <style>
+      #map {
+        width: 100%;
+        height: 700px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="map"></div>
+    <button onclick="fullScreenView()">View in full screen</button>
+    <div class="coordinate"></div>
+    <button class="print-map">Print map</button>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+      //map class initialize
+      var map = L.map("map").setView([38.861, 71.2761], 7);
+      map.zoomControl.setPosition("topright");
+      // Adding on tile layer
+      L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
+        attribution:
+          '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+      }).addTo(map);
+
+      // Adding maker in the center of the map
+
+      L.marker([38.861, 71.2761])
+        .addTo(map)
+        .bindPopup("A pretty CSS popup.<br> Easily customizable.")
+        .openPopup();
+
+      // Add map scale
+      L.control.scale().addTo(map);
+
+      //Full screen map view
+      var mapId = document.getElementById("map");
+      function fullScreenView() {
+        mapId.requestFullscreen();
+      }
+
+      //map coordinate dispaly
+      map.on("mousemove", function (e) {
+        console.log(e);
+        $(".coordinate").html(`Lat: ${e.latlng.lat}, Lng: ${e.latlng.lng}`);
+      });
+
+      // map print
+      $(".print-map").click(function () {
+        window.print();
+      });
+    </script>
+  </body>
+</html>
